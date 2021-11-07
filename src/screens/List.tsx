@@ -96,7 +96,7 @@ const List = ({route: { params }}: {route: {params: ListType}}) => {
 
 
     return(
-            <Box flex={1} justifyContent="center" p={10}>
+            <Box flex={1} justifyContent="flex-start" p={10}>
                 <Heading mb="5">{params.listName}</Heading>
                 <VStack space={4}>
                     <HStack space={2} direction="column">
@@ -148,17 +148,18 @@ const List = ({route: { params }}: {route: {params: ListType}}) => {
                                     isChecked={item.isBought}
                                     onChange={(isBought) => setProductIsBought(item.id, isBought)}
                                     value={item?.product || ''}>
+                                    <Box width="90%" flexDirection="row" justifyContent="space-between" alignItems="center">
                                     <Text
                                         mx="2"
                                         strikeThrough={item.isBought}
-                                        _light={{
-                                            color: item.isBought ? 'gray.400' : 'coolGray.800',
-                                        }}
-                                        _dark={{
-                                            color: item.isBought ? 'gray.400' : 'coolGray.50',
-                                        }}>
-                                        {item?.product + ' ' + item?.amount + ' ' + (toNumber(item?.amount) * toNumber(item?.price))}
+                                        >
+                                        {item?.product}
                                     </Text>
+                                        <Box flexDirection="column">
+                                            <Text strikeThrough={item.isBought}>Amount: {item?.amount}</Text>
+                                            <Text strikeThrough={item.isBought}>Total Price: {(toNumber(item?.amount) * toNumber(item?.price))}</Text>
+                                        </Box>
+                                    </Box>
                                 </Checkbox>
                                 <Button
                                     size="sm"
