@@ -1,13 +1,34 @@
 import {Button, List, Pressable} from "native-base";
 import {Text} from "react-native";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {ListType} from "../../screens/Main";
 import {useNavigation} from "@react-navigation/native";
 import {db} from "../../App";
+const SharedPreferences = require('react-native-shared-preferences');
+
 
 
 const Item = ({ id, listName }: ListType) => {
-    const { navigate } = useNavigation();
+    const { navigate,  } = useNavigation();
+    const [color, setColor] = useState("light.200")
+    const [width, setWidth] = useState("80%")
+
+    useEffect(() => {
+        SharedPreferences.getItem("color", (value: string) => {
+            if (!value) {
+                return;
+            }
+            setColor(value)
+        })
+
+        SharedPreferences.getItem("width", (value: string) => {
+            if (!value) {
+                return;
+            }
+            setWidth(value)
+        })
+
+    })
 
     const removeList = async (listName: string) => {
         await db.transaction((tx => {
@@ -21,11 +42,11 @@ const Item = ({ id, listName }: ListType) => {
             <List.Item
                 alignSelf="center"
                 mt={5}
-                bg="light.200"
+                bg={color}
                 borderRadius="md"
                 borderColor="muted.800"
                 justifyContent="center"
-                width="80%"
+                width={width}
                 _text={{ fontSize: '2xl' }}
                 px={4}
                 py={3}
